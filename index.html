@@ -4,6 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>MATE369|AU</title>
+  
+  <!-- 💡 新增：引入 Google Fonts 官方 Inter 字體，確保所有澳洲客人的手機看字體都極致漂亮 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
  
   <style>
     html, body{
@@ -11,7 +16,8 @@
       margin: 0;
       background: #000;
       overflow: hidden;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+      /* 💡 優先套用剛剛載入的 Inter 高級字體 */
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     /* 🎯 9:16 大盒子：回歸最穩固的相對定位 */
@@ -22,11 +28,11 @@
       margin: 0 auto;
       top: 50%;
       transform: translateY(-50%);
-      background: #0d1527; 
+      background: #0d1527; /* 質感深海藍底色 */
       overflow: hidden;
     }
 
-    /* 🎯 頂部主圖：直接用 absolute 鎖死在 top: 0，任何人都推不動它 */
+    /* 🎯 頂部主圖：鎖死在 top: 0，任何人都推不動它 */
     .poster-img{
       position: absolute;
       top: 0;
@@ -39,33 +45,40 @@
       z-index: 1;
     }
 
-    /* 🎯 資訊文案區：既然圖片是 1:1（在 9:16 盒子裡剛好佔高度的 56.25%）
-       我們直接讓文字區從 56.5% 的地方開始往下排，絕對不會重疊，也不會置中！ */
+    /* 🎯 資訊文案區：精準從 56.5% 開始排 */
     .info-content {
       position: absolute;
       top: 56.5%; 
       left: 0;
       width: 100%;
-      bottom: 12%; /* 留空間給底部的按鈕，不讓文字蓋到按鈕 */
+      bottom: 14%; /* 💡 稍微往上拉 2% 給按鈕與文字留安全呼吸空間 */
       box-sizing: border-box;
-      padding: 0 24px;
+      padding: 0 24px 16px 24px; /* 💡 底部加上 16px 內距，防止文字滾動時死死貼著按鈕 */
       z-index: 5;
-      overflow-y: auto; /* 如果文字不小心太多，允許文字區內部滾動，絕不破版 */
+      overflow-y: auto; /* 文字超出版面時允許內部滾動 */
+      
+      /* 隱藏滾動條（讓介面看起來更像原生 App，乾淨俐落） */
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
     }
+    .info-content::-webkit-scrollbar { display: none; } /* Chrome, Safari, Opera */
 
+    /* 💡 主標題：微調為更高對比的螢光水藍色，在深藍底色上極度吸睛 */
     .text-box h1 {
       font-size: clamp(16px, 4.8vw, 20px);
-      font-weight: 800;
-      color: #38bdf8; 
-      margin: 0 0 4px 0;
+      font-weight: 900; /* 加粗到 900 */
+      color: #00f2fe; 
+      margin: 0 0 6px 0;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
     }
+    
+    /* 💡 副標題描述：行高調寬到 1.5，澳洲受眾用手機閱讀英文更輕鬆 */
     .text-box p {
       font-size: clamp(11px, 3.2vw, 13px);
-      color: #ffffff;
-      line-height: 1.4;
-      margin: 0 0 8px 0;
+      color: #f3f4f6; /* 改用象牙白，柔和不刺眼但絕對清晰 */
+      line-height: 1.5; 
+      margin: 0 0 12px 0;
     }
     .bullets {
       margin: 0;
@@ -74,11 +87,14 @@
     .bullet-item {
       display: flex;
       align-items: center;
-      margin-bottom: 4px;
-      font-size: clamp(11px, 3.2vw, 13px);
+      margin-bottom: 6px;
+      font-size: clamp(11px, 3.2vw, 13.5px);
       color: #e5e7eb;
       font-weight: 500;
+      line-height: 1.4;
     }
+    
+    /* 賣點前面的螢光綠打勾 */
     .bullet-item::before {
       content: "✓";
       color: #10b981;
@@ -86,7 +102,7 @@
       margin-right: 8px;
     }
 
-    /* 🎯 按鈕容器：完美鎖定在底部 */
+    /* 🎯 按鈕容器：鎖定在底部 */
     .bottom-anchor {
       position: absolute;
       bottom: 3%;
@@ -95,10 +111,11 @@
       z-index: 10;
     }
 
+    /* 轉換按鈕（CTA） */
     .cta-hotspot{
       position: relative;
       width: 100%;
-      height: 45px;
+      height: 46px; /* 微調厚度 */
       border-radius: 999px;
       display: flex;
       align-items: center;
@@ -111,14 +128,17 @@
       letter-spacing: 1px;
       color: #fff;
       text-shadow: 0 2px 8px rgba(0,0,0,0.55);
-      background: linear-gradient(180deg, #f0abfc 0%, #a855f7 28%, #7c3aed 58%, #22d3ee 110%);
-      border: 1px solid rgba(255,255,255,0.28);
+      
+      /* 💡 稍微強化漸層，配合深藍色底色，霓虹感更上檔次 */
+      background: linear-gradient(180deg, #f0abfc 0%, #a855f7 28%, #6366f1 70%, #00f2fe 110%);
+      border: 1px solid rgba(255,255,255,0.3);
       box-shadow:
         0 5px 0 rgba(49,46,129,0.95),
         0 15px 30px rgba(0,0,0,0.5),
-        0 0 20px rgba(34,211,238,0.22),
+        0 0 20px rgba(0,242,254,0.22),
         inset 0 1px 0 rgba(255,255,255,0.45),
         inset 0 -8px 15px rgba(0,0,0,0.28);
+        
       animation: ctaBreath 1.15s ease-in-out infinite;
       transform-origin: center;
       will-change: transform;
@@ -150,17 +170,18 @@
       width: 100%;
       text-align: center;
       font-size: 10px;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.35);
       letter-spacing: 0.5px;
       line-height: 1.4;
       margin-top: 8px;
     }
     .footer a {
-      color: rgba(34,211,238,0.5);
+      color: rgba(0,242,254,0.6);
       text-decoration: none;
     }
   </style>
 
+  <!-- 🎯 Meta Pixel (臉書像素) -->
   <script>
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -179,8 +200,10 @@
 <body>
   <main class="poster">
     
+    <!-- 1. 頂部主圖 -->
     <img class="poster-img" src="Mate0708.webp" alt="Recruitment Poster">
 
+    <!-- 2. 中間資訊區 -->
     <div class="info-content">
       <div class="text-box">
         <h1>MATE369 NETWORK AUSTRALIA</h1>
@@ -194,6 +217,7 @@
       </div>
     </div>
 
+    <!-- 3. 底部按鈕區 -->
     <div class="bottom-anchor">
       <a class="cta-hotspot"
          href="https://wa.me/61485565693"
@@ -208,7 +232,7 @@
         <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
       </div>
     </div>
- 
+
   </main>
 </body>
 </html>
