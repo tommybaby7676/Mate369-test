@@ -2,42 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>MATE369 Network — Australia Recruitment</title>
 
   <style>
     /* ==========================================================================
-       【核心排版與鐵盒鎖定】
-       這部分是投手級的底層邏輯，徹底鎖死 9:16 畫面，不論手機長短皆不會產生滑動條。
+       【純淨 9:16 安全鐵盒】
+       不使用 vh 單位，改用百分比與彈性黑邊填充，徹底解決瀏覽器網址列推擠破版的問題。
        ========================================================================== */
     html, body {
-      height: 100vh;
+      height: 100%;
       margin: 0;
       padding: 0;
       background: #000;
-      overflow: hidden; 
+      overflow: hidden; /* 徹底鎖死滑動 */
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* 9:16 固定比例鐵盒 */
+    /* 9:16 絕對比例鐵盒，自動適應手機螢幕，多餘空間留黑邊 */
     .viewport-box {
       position: relative;
-      width: min(100vw, calc(100vh * (9 / 16)));
-      height: 100vh;
-      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+      max-width: calc(100vh * (9 / 16));
+      max-height: calc(100vw * (16 / 9));
+      aspect-ratio: 9 / 16;
       background: #0b0f19;
-      box-shadow: 0 0 50px rgba(0,0,0,0.9);
+      box-shadow: 0 0 40px rgba(0,0,0,0.8);
       
-      /* 使用 Flex 佈局，由上往下依嚴格比例均分 */
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
+      overflow: hidden;
     }
 
-    /* 頂部圖片區：嚴格限制佔用高度 42%，並強制將 1:1 圖片滿版裁切 */
+    /* 頂部圖片區：嚴格限制高度百分比（42%） */
     .image-zone {
       width: 100%;
-      height: 42vh; 
+      height: 42%; 
       overflow: hidden;
       flex-shrink: 0;
       background: #000;
@@ -45,36 +50,36 @@
     .image-zone img {
       width: 100%;
       height: 100%;
-      object-fit: cover; /* 確保 1:1 圖片能完美吃滿這個區塊不留白 */
+      object-fit: cover; /* 1:1 圖片自動完美裁剪吃滿 */
       display: block;
       user-select: none;
       -webkit-user-drag: none;
     }
 
-    /* 中部文案區：嚴格限制佔用高度 38%，文字垂直居中 */
+    /* 中部文案區：嚴格限制高度百分比（38%） */
     .text-zone {
       width: 100%;
-      height: 38vh;
-      padding: 0 24px;
+      height: 38%;
+      padding: 0 20px;
       box-sizing: border-box;
       flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center; 
+      justify-content: center; /* 讓文案在區塊內垂直居中 */
     }
     .text-zone h1 {
-      font-size: clamp(18px, 5vw, 22px);
+      font-size: clamp(16px, 5vw, 20px);
       font-weight: 700;
       color: #38bdf8;
-      margin: 0 0 8px 0;
+      margin: 0 0 6px 0;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     .text-zone p {
-      font-size: clamp(12px, 3.4vw, 14px);
+      font-size: clamp(11px, 3.2vw, 13px);
       color: #9ca3af;
-      line-height: 1.5;
-      margin: 0 0 16px 0;
+      line-height: 1.4;
+      margin: 0 0 10px 0;
     }
     .bullets-container {
       margin: 0;
@@ -83,8 +88,8 @@
     .bullet-item {
       display: flex;
       align-items: center;
-      margin-bottom: 8px;
-      font-size: clamp(12px, 3.4vw, 14px);
+      margin-bottom: 6px;
+      font-size: clamp(11px, 3.2vw, 13px);
       color: #e5e7eb;
       font-weight: 500;
     }
@@ -92,15 +97,15 @@
       content: "✓";
       color: #10b981;
       font-weight: bold;
-      margin-right: 10px;
-      font-size: 15px;
+      margin-right: 8px;
+      font-size: 13px;
     }
 
-    /* 底部按鈕與頁尾區：嚴格限制佔用高度 20% */
+    /* 底部按鈕與頁尾區：嚴格限制高度百分比（20%） */
     .bottom-zone {
       width: 100%;
-      height: 20vh;
-      padding: 0 24px;
+      height: 20%;
+      padding: 0 20px;
       box-sizing: border-box;
       flex-shrink: 0;
       display: flex;
@@ -108,10 +113,7 @@
       justify-content: flex-start;
     }
 
-    /* ==========================================================================
-       【你最愛的呼吸掃光按鈕與動畫】
-       這部分代碼已經精確微調過高度（48px），完美適配 9:16 的底部空間。
-       ========================================================================== */
+    /* 呼吸掃光按鈕 */
     .cta-hotspot {
       display: flex;
       align-items: center;
@@ -119,17 +121,17 @@
       text-decoration: none;
       cursor: pointer;
       width: 100%;
-      height: 48px; 
+      height: 44px; /* 微調高度，適配各類全面屏 */
       border-radius: 999px;
       z-index: 10;
-      font-size: clamp(15px, 4.2vw, 18px);
+      font-size: clamp(14px, 4vw, 16px);
       font-weight: 800;
       letter-spacing: 0.5px;
       color: #fff;
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
       background: linear-gradient(180deg, #f0abfc 0%, #a855f7 28%, #7c3aed 58%, #22d3ee 110%);
       border: 1px solid rgba(255,255,255,0.28);
-      box-shadow: 0 5px 0 rgba(49,46,129,0.95), 0 12px 20px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 0 rgba(49,46,129,0.95), 0 10px 15px rgba(0,0,0,0.5);
       position: relative;
       overflow: hidden;
       isolation: isolate;
@@ -149,20 +151,19 @@
     }
     @keyframes ctaPulse { 0%, 100% { transform: scale(0.98); opacity:.18; } 50% { transform: scale(1.05); opacity:.38; } }
     @keyframes ctaShine { 0% { transform: translateX(-30%) rotate(20deg); opacity:0; } 20%, 55% { opacity:.35; } 70%, 100% { transform: translateX(220%) rotate(20deg); opacity:0; } }
-    @keyframes ctaBreath { 0%, 100% { transform: scale(1); } 35% { transform: scale(1.04); } 65% { transform: scale(0.985); } }
+    @keyframes ctaBreath { 0%, 100% { transform: scale(1); } 35% { transform: scale(1.03); } 65% { transform: scale(0.985); } }
     .cta-hotspot:hover { filter: brightness(1.08); }
     .cta-hotspot:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(49,46,129,0.95); }
     .cta-hotspot:hover::before, .cta-hotspot:hover::after { animation-play-state: paused; }
 
-    /* 頂級過審合規頁尾 */
+    /* 合規頁尾 */
     .legal-footer {
-      margin-top: auto; /* 自動推到 20vh 的最底部 */
-      padding-bottom: 12px;
+      margin-top: auto;
+      padding-bottom: 8px;
       text-align: center;
       font-size: 10px;
       color: rgba(255,255,255,0.35);
       line-height: 1.4;
-      letter-spacing: 0.5px;
     }
     .legal-footer a {
       color: rgba(34,211,238,0.5);
@@ -170,7 +171,7 @@
     }
   </style>
 
-  <!-- Meta Pixel Code （原封不動保留你的像素） -->
+  <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -189,24 +190,16 @@
 
   <div class="viewport-box">
     
-    <!-- ==========================================================================
-         【老哥看這裡！以後你只需要修改以下這５個地方（填空題欄位）】
-         ========================================================================== -->
-
-    <!-- 填空 1：更換你的 1:1 廣告圖片名稱 -->
+    <!-- 1：1 廣告圖片名稱 -->
     <div class="image-zone">
       <img src="Mate0708.2.webp" alt="Campaign Banner">
     </div>
 
     <!-- 中部文案 -->
     <div class="text-zone">
-      <!-- 填空 2：主要大標題（通常放項目/品牌名稱） -->
       <h1>MATE369 Network Australia</h1>
-      
-      <!-- 填空 3：白帽包裝簡介（過審防封核心） -->
       <p>We are officially expanding our digital network across AU. Seeking local Growth Partners, Media Buyers, and Remote Assistants.</p>
       
-      <!-- 填空 4：福利吸引點（三個打勾項目） -->
       <div class="bullets-container">
         <div class="bullet-item">High-commission with secure weekly pay.</div>
         <div class="bullet-item">100% flexible hours, perfect side hustle.</div>
@@ -216,7 +209,6 @@
 
     <!-- 底部按鈕與頁尾 -->
     <div class="bottom-zone">
-      <!-- 填空 5：更換你的 WhatsApp 連結，以及按鈕文字（如果需要改的話） -->
       <a class="cta-hotspot"
          href="https://wa.me/61485565693"
          target="_blank"
@@ -225,16 +217,11 @@
          Apply Now via WhatsApp
       </a>
       
-      <!-- 完美過審頁尾（建議保持原樣不動） -->
       <div class="legal-footer">
         MATE369 Ltd. © 2026. All Rights Reserved.<br>
         <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
       </div>
     </div>
-
-    <!-- ==========================================================================
-         【填空題結束】
-         ========================================================================== -->
 
   </div>
 
