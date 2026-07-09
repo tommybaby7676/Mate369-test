@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="en"> <head>
+<html lang="en">
+<head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>MATE369|AU</title>
 
   <style>
@@ -9,11 +10,11 @@
       height:100%;
       margin:0;
       background:#000;
-      overflow:hidden; /* 徹底鎖死滾動條，維持單頁完整性 */
+      overflow:hidden;
       font-family: Arial, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* 🎯 沿用你完美的 9:16 海報容器架構，不限裝置永遠不跑版 */
+    /* 🎯 100% 沿用你最原本、最穩固的 9:16 大盒子，絕不動它 */
     .poster{
       position: relative;
       width: min(100vw, calc(100vh * (9 / 16)));
@@ -21,43 +22,38 @@
       margin: 0 auto;
       top: 50%;
       transform: translateY(-50%);
-      background:#000;
+      background:#000; /* 👈 之後想換底色改這邊 */
       overflow:hidden;
-      
-      /* 使用 Flex 佈局讓下方資訊區自動適應 1:1 圖片留下的空間 */
-      display: flex;
-      flex-direction: column;
     }
 
-    /* 🎯 圖片區微調：確保 1080*1080 圖片絕對不被裁切、不吃掉上方、完全不變形 */
+    /* 🎯 圖片位置死死固定：寬度 100%，高度由 1:1 圖片自然撐開，絕對不裁切上方 */
     .poster-img{
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: auto; /* 核心：高度自動，讓 1:1 圖片完美延伸 */
-      flex-shrink: 0;
+      height: auto;
       user-select:none;
       -webkit-user-drag:none;
       z-index:1;
     }
 
-    /* 🎯 資訊整合區：緊跟在 1:1 圖片下方，自動吃滿賸餘空間並壓扁垂直間距 */
+    /* 🎯 資訊文案區：用絕對定位死死壓在圖片下方，並大幅壓縮間距 */
     .info-content {
+      position: absolute;
+      top: 57%; /* 1:1圖片大約佔 56.25% 高度，所以從 57% 開始排文字，剛好完美接軌 */
+      left: 0;
       width: 100%;
-      flex-grow: 1;
-      background: #000; /* 👈 老哥，你之後想換底色，直接改這個色票即可 */
-      z-index: 5;
+      height: 43%;
       box-sizing: border-box;
-      padding: 12px 24px;
-      
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between; /* 讓文案、按鈕、頁尾完美均分下半部空間 */
+      padding: 0 24px;
+      z-index: 5;
     }
 
-    /* 英文招募文案排版（間距已全面壓緊） */
     .text-box h1 {
       font-size: clamp(16px, 4.8vw, 20px);
       font-weight: 800;
-      color: #38bdf8; /* 天空藍 */
+      color: #38bdf8; 
       margin: 0 0 4px 0;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -66,7 +62,7 @@
       font-size: clamp(11px, 3.2vw, 13px);
       color: #9ca3af;
       line-height: 1.4;
-      margin: 0 0 10px 0;
+      margin: 0 0 8px 0;
     }
     .bullets {
       margin: 0;
@@ -75,31 +71,33 @@
     .bullet-item {
       display: flex;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 4px; /* 壓緊垂直間距 */
       font-size: clamp(11px, 3.2vw, 13px);
       color: #e5e7eb;
       font-weight: 500;
     }
     .bullet-item::before {
       content: "✓";
-      color: #10b981; /* 綠色打勾 */
+      color: #10b981; 
       font-weight: bold;
       margin-right: 8px;
     }
 
-    /* CTA 按鈕外框 */
-    .cta-box {
-      width: 100%;
-      margin-top: 4px;
+    /* 🎯 按鈕與頁尾：用絕對定位死死鎖定在 9:16 大盒子的最底部，任誰都推不走 */
+    .bottom-anchor {
+      position: absolute;
+      bottom: 3%;
+      left: 24px;
+      right: 24px;
+      z-index: 10;
     }
 
-    /* 沿用你原本最完美的呼吸、掃光、點擊動效按鈕（微調高度 45px 適配全面屏） */
+    /* 100% 沿用你原本最完美的呼吸、掃光、點擊動效按鈕 */
     .cta-hotspot{
       position: relative;
       width: 100%;
       height: 45px;
       border-radius:999px;
-      z-index:10;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -149,7 +147,6 @@
     @keyframes ctaBreath{ 0%, 100% { transform: scale(1); } 35% { transform: scale(1.04); } 65% { transform: scale(0.985); } }
     .cta-hotspot:hover::before, .cta-hotspot:hover::after, .cta-hotspot:active::before, .cta-hotspot:active::after{ animation-play-state: paused; }
 
-    /* 底部版權與合規文字 */
     .footer{
       width:100%;
       text-align:center;
@@ -185,7 +182,6 @@
     <img class="poster-img" src="Mate0708.2.webp" alt="Recruitment Poster">
 
     <div class="info-content">
-      
       <div class="text-box">
         <h1>MATE369 NETWORK AUSTRALIA</h1>
         <p>We are officially expanding our digital network across AU. Seeking local Growth Partners, Media Buyers, and Remote Assistants.</p>
@@ -196,22 +192,21 @@
           <div class="bullet-item">Full 1-on-1 expert training provided.</div>
         </div>
       </div>
+    </div>
 
-      <div class="cta-box">
-        <a class="cta-hotspot"
-           href="https://wa.me/61485565693"
-           target="_blank"
-           rel="noopener"
-           onclick="setTimeout(function(){ if(window.fbq){ fbq('trackCustom','CTA_Click'); } },50);">
-           Apply Now via WhatsApp
-        </a>
+    <div class="bottom-anchor">
+      <a class="cta-hotspot"
+         href="https://wa.me/61485565693"
+         target="_blank"
+         rel="noopener"
+         onclick="setTimeout(function(){ if(window.fbq){ fbq('trackCustom','CTA_Click'); } },50);">
+         Apply Now via WhatsApp
+      </a>
 
-        <div class="footer">
-          MATE369 Ltd. © 2026 All Rights Reserved.<br>
-          <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-        </div>
+      <div class="footer">
+        MATE369 Ltd. © 2026 All Rights Reserved.<br>
+        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
       </div>
-
     </div>
 
   </main>
