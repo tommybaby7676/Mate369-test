@@ -7,22 +7,21 @@
 
   <style>
     /* ==========================================================================
-       【純淨 9:16 安全鐵盒】
-       不使用 vh 單位，改用百分比與彈性黑邊填充，徹底解決瀏覽器網址列推擠破版的問題。
+       【方案 A：1:1 零裁切安全鐵盒架構】
        ========================================================================== */
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
-      background: #000;
-      overflow: hidden; /* 徹底鎖死滑動 */
+      background: #000; /* 手機外框其餘留白處保持純黑 */
+      overflow: hidden; /* 鎖死滑動 */
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* 9:16 絕對比例鐵盒，自動適應手機螢幕，多餘空間留黑邊 */
+    /* 9:16 絕對比例主要鐵盒 */
     .viewport-box {
       position: relative;
       width: 100%;
@@ -30,7 +29,9 @@
       max-width: calc(100vh * (9 / 16));
       max-height: calc(100vw * (16 / 9));
       aspect-ratio: 9 / 16;
-      background: #0b0f19;
+      
+      /* 優化：改為深墨綠色基調，與你的 iGaming/澳洲無尾熊海報綠色完美融合 */
+      background: #061a12; 
       box-shadow: 0 0 40px rgba(0,0,0,0.8);
       
       display: flex;
@@ -39,47 +40,48 @@
       overflow: hidden;
     }
 
-    /* 頂部圖片區：嚴格限制高度百分比（42%） */
+    /* 頂部圖片區：寬度 100%，高度由 1:1 圖片自然撐開（剛好佔用 56.25% 寬高比） */
     .image-zone {
       width: 100%;
-      height: 42%; 
-      overflow: hidden;
+      position: relative;
       flex-shrink: 0;
-      background: #000;
+      background: #061a12;
     }
     .image-zone img {
       width: 100%;
-      height: 100%;
-      object-fit: cover; /* 1:1 圖片自動完美裁剪吃滿 */
+      height: auto;
       display: block;
+      /* 方案 A 核心：使用 contain，確保 1080x1080 圖片在任何螢幕上絕對不被裁切、不變形 */
+      object-fit: contain; 
       user-select: none;
       -webkit-user-drag: none;
     }
 
-    /* 中部文案區：嚴格限制高度百分比（38%） */
-    .text-zone {
+    /* 中部與底部一體化整合區：自動吃滿剩下近一半的空間 */
+    .content-zone {
       width: 100%;
-      height: 38%;
-      padding: 0 20px;
+      flex-grow: 1;
+      padding: 16px 24px;
       box-sizing: border-box;
-      flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center; /* 讓文案在區塊內垂直居中 */
+      justify-content: space-between; /* 讓文案與按鈕完美均分上下距離 */
     }
-    .text-zone h1 {
-      font-size: clamp(16px, 5vw, 20px);
-      font-weight: 700;
-      color: #38bdf8;
+
+    /* 文案排版 */
+    .text-container h1 {
+      font-size: clamp(16px, 4.8vw, 20px);
+      font-weight: 800;
+      color: #38bdf8; /* 天空藍保持吸睛 */
       margin: 0 0 6px 0;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .text-zone p {
+    .text-container p {
       font-size: clamp(11px, 3.2vw, 13px);
       color: #9ca3af;
       line-height: 1.4;
-      margin: 0 0 10px 0;
+      margin: 0 0 12px 0;
     }
     .bullets-container {
       margin: 0;
@@ -95,25 +97,18 @@
     }
     .bullet-item::before {
       content: "✓";
-      color: #10b981;
+      color: #10b981; /* 綠色安全打勾 */
       font-weight: bold;
       margin-right: 8px;
       font-size: 13px;
     }
 
-    /* 底部按鈕與頁尾區：嚴格限制高度百分比（20%） */
-    .bottom-zone {
+    /* 底部按鈕與頁尾 */
+    .action-container {
       width: 100%;
-      height: 20%;
-      padding: 0 20px;
-      box-sizing: border-box;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
     }
 
-    /* 呼吸掃光按鈕 */
+    /* 你最愛的經典呼吸掃光按鈕 */
     .cta-hotspot {
       display: flex;
       align-items: center;
@@ -121,7 +116,7 @@
       text-decoration: none;
       cursor: pointer;
       width: 100%;
-      height: 44px; /* 微調高度，適配各類全面屏 */
+      height: 46px; 
       border-radius: 999px;
       z-index: 10;
       font-size: clamp(14px, 4vw, 16px);
@@ -158,8 +153,7 @@
 
     /* 合規頁尾 */
     .legal-footer {
-      margin-top: auto;
-      padding-bottom: 8px;
+      margin-top: 10px;
       text-align: center;
       font-size: 10px;
       color: rgba(255,255,255,0.35);
@@ -171,7 +165,6 @@
     }
   </style>
 
-  <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -190,37 +183,38 @@
 
   <div class="viewport-box">
     
-    <!-- 1：1 廣告圖片名稱 -->
     <div class="image-zone">
       <img src="Mate0708.2.webp" alt="Campaign Banner">
     </div>
 
-    <!-- 中部文案 -->
-    <div class="text-zone">
-      <h1>MATE369 Network Australia</h1>
-      <p>We are officially expanding our digital network across AU. Seeking local Growth Partners, Media Buyers, and Remote Assistants.</p>
+    <div class="content-zone">
       
-      <div class="bullets-container">
-        <div class="bullet-item">High-commission with secure weekly pay.</div>
-        <div class="bullet-item">100% flexible hours, perfect side hustle.</div>
-        <div class="bullet-item">Full 1-on-1 expert training provided.</div>
+      <div class="text-container">
+        <h1>MATE369 Network Australia</h1>
+        <p>We are officially expanding our digital network across AU. Seeking local Growth Partners, Media Buyers, and Remote Assistants.</p>
+        
+        <div class="bullets-container">
+          <div class="bullet-item">High-commission with secure weekly pay.</div>
+          <div class="bullet-item">100% flexible hours, perfect side hustle.</div>
+          <div class="bullet-item">Full 1-on-1 expert training provided.</div>
+        </div>
       </div>
-    </div>
 
-    <!-- 底部按鈕與頁尾 -->
-    <div class="bottom-zone">
-      <a class="cta-hotspot"
-         href="https://wa.me/61485565693"
-         target="_blank"
-         rel="noopener"
-         onclick="setTimeout(function(){ if(window.fbq){ fbq('trackCustom','CTA_Click'); } },50);">
-         Apply Now via WhatsApp
-      </a>
-      
-      <div class="legal-footer">
-        MATE369 Ltd. © 2026. All Rights Reserved.<br>
-        <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+      <div class="action-container">
+        <a class="cta-hotspot"
+           href="https://wa.me/61485565693"
+           target="_blank"
+           rel="noopener"
+           onclick="setTimeout(function(){ if(window.fbq){ fbq('trackCustom','CTA_Click'); } },50);">
+           Apply Now via WhatsApp
+        </a>
+        
+        <div class="legal-footer">
+          MATE369 Ltd. © 2026. All Rights Reserved.<br>
+          <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+        </div>
       </div>
+
     </div>
 
   </div>
