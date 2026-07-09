@@ -15,7 +15,7 @@
       font-family: Arial, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* 🎯 手機 9:16 大盒子（核心視覺骨架）：改用 Flexbox 由上往下流式排列 */
+    /* 🎯 手機 9:16 大盒子（核心視覺骨架）：Flexbox 由上往下流式排列 */
     .poster{
       position: relative;
       /* 依據螢幕高度自動計算出完美的 9:16 寬度，左右留黑邊，確保在任何手機都不變形 */
@@ -27,12 +27,12 @@
       background: #000; 
       overflow: hidden;
       
-      /* 💡 新增：改為彈性盒子，讓內部元件自動依序排列，絕不重疊 */
+      /* 彈性盒子：讓內部元件自動依序排列，絕不重疊 */
       display: flex;
       flex-direction: column;
     }
 
-    /* 🎯 頂部主圖：死死固定在網頁最上方，高度由 1:1 圖片自然撐開，絕對不裁切 */
+    /* 🎯 頂部主圖：死死固定在網頁最上方，100% 解決置中與拉扯問題 */
     .poster-img{
       width: 100%;
       height: auto;
@@ -40,6 +40,10 @@
       user-select: none; /* 防止使用者長按圖片下載 */
       -webkit-user-drag: none; /* 防止使用者拖曳圖片 */
       z-index: 1;
+      
+      /* 💡 投手修正點：強制圖片靠頂部對齊，並依據 9:16 比例鎖死 1:1 圖片的最高佔比 */
+      align-self: flex-start;  
+      max-height: 56.25%;      
     }
 
     /* 🎯 資訊文案區：自動接軌在圖片正下方，完美避免重疊風險 */
@@ -49,7 +53,7 @@
       padding: 16px 24px 0 24px; /* 設定上下左右內縮邊距，壓縮間距留給按鈕 */
       z-index: 5;
       
-      /* 💡 新增：讓文字區自動延伸填滿剩餘空間，藉此把底部的按鈕推至最底 */
+      /* 讓文字區自動延伸填滿剩餘空間，藉此把底部的按鈕推至最底 */
       flex-grow: 1; 
     }
 
@@ -228,7 +232,7 @@
          href="https://wa.me/61485565693"
          target="_blank"
          rel="noopener"
-         /* 🎯 投手關鍵：點擊後延遲 50 毫秒，確保臉書觸發自訂事件 "CTA_Click" (按鈕點擊)，精準優化廣告投放 */
+         /* 🎯 點擊後延遲 50 毫秒，確保臉書觸發自訂事件 "CTA_Click" */
          onclick="setTimeout(function(){ if(window.fbq){ fbq('trackCustom','CTA_Click'); } },50);">
          Apply Now via WhatsApp
       </a>
