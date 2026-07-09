@@ -6,182 +6,151 @@
   <title>MATE369|AU</title>
 
   <style>
-    /* 🎯 基礎全域設定 */
     html, body{
       height: 100%;
       margin: 0;
-      background: #000; /* 背景全黑 */
-      overflow: hidden; /* 核心：禁止整個網頁上下滾動，鎖死螢幕 */
+      background: #000;
+      overflow: hidden;
       font-family: Arial, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* 🎯 手機 9:16 大盒子（核心視覺骨架）：Flexbox 由上往下流式排列 */
+    /* 🎯 9:16 大盒子：回歸最穩固的相對定位 */
     .poster{
       position: relative;
-      /* 依據螢幕高度自動計算出完美的 9:16 寬度，左右留黑邊，確保在任何手機都不變形 */
       width: min(100vw, calc(100vh * (9 / 16)));
       height: 100%;
-      margin: 0 auto; /* 置中 */
+      margin: 0 auto;
       top: 50%;
-      transform: translateY(-50%); /* 垂直居中對齊 */
+      transform: translateY(-50%);
       background: #000; 
       overflow: hidden;
-      
-      /* 彈性盒子：讓內部元件自動依序排列，絕不重疊 */
-      display: flex;
-      flex-direction: column;
     }
 
-    /* 🎯 頂部主圖：死死固定在網頁最上方，100% 解決置中與拉扯問題 */
+    /* 🎯 頂部主圖：直接用 absolute 鎖死在 top: 0，任何人都推不動它 */
     .poster-img{
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: auto;
-      display: block; /* 移除圖片底部預設空白間距 */
-      user-select: none; /* 防止使用者長按圖片下載 */
-      -webkit-user-drag: none; /* 防止使用者拖曳圖片 */
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
       z-index: 1;
-      
-      /* 💡 投手修正點：強制圖片靠頂部對齊，並依據 9:16 比例鎖死 1:1 圖片的最高佔比 */
-      align-self: flex-start;  
-      max-height: 56.25%;      
     }
 
-    /* 🎯 資訊文案區：自動接軌在圖片正下方，完美避免重疊風險 */
+    /* 🎯 資訊文案區：既然圖片是 1:1（在 9:16 盒子裡剛好佔高度的 56.25%）
+       我們直接讓文字區從 56.5% 的地方開始往下排，絕對不會重疊，也不會置中！ */
     .info-content {
+      position: absolute;
+      top: 56.5%; 
+      left: 0;
       width: 100%;
+      bottom: 12%; /* 留空間給底部的按鈕，不讓文字蓋到按鈕 */
       box-sizing: border-box;
-      padding: 16px 24px 0 24px; /* 設定上下左右內縮邊距，壓縮間距留給按鈕 */
+      padding: 0 24px;
       z-index: 5;
-      
-      /* 讓文字區自動延伸填滿剩餘空間，藉此把底部的按鈕推至最底 */
-      flex-grow: 1; 
+      overflow-y: auto; /* 如果文字不小心太多，允許文字區內部滾動，絕不破版 */
     }
 
-    /* 主標題：MATE369 NETWORK AUSTRALIA */
     .text-box h1 {
-      /* clamp 自動縮放字體：最小 16px，隨螢幕寬度變動，最大 20px，確保不破版 */
       font-size: clamp(16px, 4.8vw, 20px);
       font-weight: 800;
-      color: #38bdf8; /* 水藍色 */
-      margin: 0 0 4px 0; /* 壓縮下方間距 */
-      text-transform: uppercase; /* 自動轉大寫 */
+      color: #38bdf8; 
+      margin: 0 0 4px 0;
+      text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-
-    /* 副標題說明文字 */
     .text-box p {
       font-size: clamp(11px, 3.2vw, 13px);
-      color: #9ca3af; /* 灰色 */
+      color: #9ca3af;
       line-height: 1.4;
       margin: 0 0 8px 0;
     }
-
-    /* 條列式賣點容器 */
     .bullets {
       margin: 0;
       padding: 0;
     }
-
-    /* 每一行賣點（打勾項目） */
     .bullet-item {
       display: flex;
       align-items: center;
-      margin-bottom: 4px; /* 壓緊垂直間距，留空間給下面的按鈕 */
+      margin-bottom: 4px;
       font-size: clamp(11px, 3.2vw, 13px);
       color: #e5e7eb;
       font-weight: 500;
     }
-
-    /* 用 CSS 自動在賣點前面加上綠色的打勾「✓」符號 */
     .bullet-item::before {
       content: "✓";
-      color: #10b981; /* 綠色 */
+      color: #10b981;
       font-weight: bold;
       margin-right: 8px;
     }
 
-    /* 🎯 按鈕與頁尾容器：固定在 9:16 大盒子的最底部 */
+    /* 🎯 按鈕容器：完美鎖定在底部 */
     .bottom-anchor {
       position: absolute;
-      bottom: 3%; /* 距離底部 3%，死死鎖定 */
+      bottom: 3%;
       left: 24px;
       right: 24px;
-      z-index: 10; /* 圖層在最上層，確保點得到 */
+      z-index: 10;
     }
 
-    /* 🎯 轉換按鈕（CTA）：具備呼吸、掃光、點擊動效 */
     .cta-hotspot{
       position: relative;
       width: 100%;
       height: 45px;
-      border-radius: 999px; /* 膠囊狀圓角 */
+      border-radius: 999px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-decoration: none;
       cursor: pointer;
       box-sizing: border-box;
-
       font-size: clamp(14px, 4vw, 16px);
-      font-weight: 950; /* 超粗字體 */
+      font-weight: 950;
       letter-spacing: 1px;
       color: #fff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.55); /* 文字陰影，增加立體感 */
-
-      /* 漸層色背景：霓虹紫色到水藍色（典型網賺/娛樂城吸睛配色） */
+      text-shadow: 0 2px 8px rgba(0,0,0,0.55);
       background: linear-gradient(180deg, #f0abfc 0%, #a855f7 28%, #7c3aed 58%, #22d3ee 110%);
       border: 1px solid rgba(255,255,255,0.28);
-      /* 按鈕立體陰影與內發光 */
       box-shadow:
-        0 5px 0 rgba(49,46,129,0.95), /* 按鈕下方的厚度感（3D效果） */
+        0 5px 0 rgba(49,46,129,0.95),
         0 15px 30px rgba(0,0,0,0.5),
         0 0 20px rgba(34,211,238,0.22),
         inset 0 1px 0 rgba(255,255,255,0.45),
         inset 0 -8px 15px rgba(0,0,0,0.28);
-
-      animation: ctaBreath 1.15s ease-in-out infinite; /* 動畫：按鈕會像呼吸一樣自主放大縮小 */
+      animation: ctaBreath 1.15s ease-in-out infinite;
       transform-origin: center;
       will-change: transform;
       overflow: hidden;
       isolation: isolate;
     }
-
-    /* 滑鼠滑過按鈕時稍微變亮 */
     .cta-hotspot:hover{ filter: brightness(1.08) saturate(1.05); }
-
-    /* 🎯 按鈕被點擊瞬間的微動效：按鈕下沉、厚度變薄，回饋感極佳 */
     .cta-hotspot:active{
       transform: translateY(2px);
       filter: brightness(0.98);
       box-shadow: 0 2px 0 rgba(49,46,129,0.95), 0 8px 15px rgba(0,0,0,0.5), inset 0 3px 10px rgba(0,0,0,0.35);
     }
-
-    /* 按鈕背後的微光擴散特效（Pulse） */
     .cta-hotspot::before{
       content:""; position:absolute; inset:-14%; border-radius:999px;
       background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.35) 0%, rgba(34,211,238,0.22) 25%, rgba(168,85,247,0.18) 45%, rgba(0,0,0,0) 70%);
       filter: blur(10px); opacity:.25; animation: ctaPulse 1.4s ease-in-out infinite; pointer-events:none; z-index:0;
     }
-
-    /* 按鈕表面閃過的反光特效（Shine/掃光），增加點擊衝動 */
     .cta-hotspot::after{
       content:""; position:absolute; top:-40%; left:-60%; width:45%; height:180%; transform: rotate(20deg);
       background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 45%, rgba(255,255,255,0) 100%);
       opacity:.35; animation: ctaShine 2.2s ease-in-out infinite; pointer-events:none; z-index:1;
     }
-
-    /* 以下為各式動畫的數據設定（呼吸、擴散、掃光頻率） */
     @keyframes ctaPulse{ 0%, 100% { transform: scale(0.98); opacity:.18; } 50% { transform: scale(1.05); opacity:.38; } }
     @keyframes ctaShine{ 0% { transform: translateX(-30%) rotate(20deg); opacity:0; } 20%, 55% { opacity:.35; } 70%, 100% { transform: translateX(220%) rotate(20deg); opacity:0; } }
     @keyframes ctaBreath{ 0%, 100% { transform: scale(1); } 35% { transform: scale(1.04); } 65% { transform: scale(0.985); } }
     .cta-hotspot:hover::before, .cta-hotspot:hover::after, .cta-hotspot:active::before, .cta-hotspot:active::after{ animation-play-state: paused; }
 
-    /* 頁尾免責聲明與版權宣告 */
     .footer{
       width: 100%;
       text-align: center;
       font-size: 10px;
-      color: rgba(255,255,255,0.4); /* 半透明灰色 */
+      color: rgba(255,255,255,0.4);
       letter-spacing: 0.5px;
       line-height: 1.4;
       margin-top: 8px;
@@ -202,9 +171,7 @@
   s.parentNode.insertBefore(t,s)}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
   
-  /* ⚠️ 核心注意：這是你的 Pixel ID */
   fbq('init', '3756395731322645'); 
-  /* 追蹤「PageView（基底瀏覽事件）」 */
   fbq('track', 'PageView');
   </script>
 </head>
@@ -232,7 +199,6 @@
          href="https://wa.me/61485565693"
          target="_blank"
          rel="noopener"
-         /* 🎯 點擊後延遲 50 毫秒，確保臉書觸發自訂事件 "CTA_Click" */
          onclick="setTimeout(function(){ if(window.fbq){ fbq('trackCustom','CTA_Click'); } },50);">
          Apply Now via WhatsApp
       </a>
