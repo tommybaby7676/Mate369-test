@@ -27,8 +27,6 @@
       transform: translateY(-50%);
       background: #0d1527; 
       overflow: hidden;
-      
-     
       container-type: inline-size;
     }
 
@@ -64,7 +62,6 @@
 
     
     .text-box h1 {
-     
       font-size: clamp(18px, 5.5cqw, 26px);
       font-weight: 900; 
       color: #00f2fe;  
@@ -75,7 +72,6 @@
     
    
     .text-box p {
-     
       font-size: clamp(12px, 3.5cqw, 16px);
       color: #f3f4f6; 
       line-height: 1.5; 
@@ -181,18 +177,49 @@
     }
   </style>
 
+  <!-- 📊 Google tag (gtag.js) - GA4 數據追蹤 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HYCWKQH9PY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HYCWKQH9PY');
+  </script>
+
+  <!-- 🎯 Meta Pixel Code - 修正後的全新像素 -->
   <script>
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
   n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  if(!f._fbq)f._fbq=n;n.push=n;n.track=n;n.loaded=!0;n.version='2.0';
   n.queue=[];t=b.createElement(e);t.async=!0;
   t.src=v;s=b.getElementsByTagName(e)[0];
   s.parentNode.insertBefore(t,s)}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
   
-  fbq('init', '3756395731322645'); 
+  fbq('init', '2329501607795964'); // 👈 已精確替換成你的最新像素 ID
   fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=2329501607795964&ev=PageView&noscript=1"
+  /></noscript>
+
+  <!-- 🛠️ 雙向數據點擊追蹤引擎 -->
+  <script>
+  function trackAllianceClick() {
+      // 1. 發送給 Meta Pixel 自訂事件
+      if(typeof fbq === 'function') {
+          fbq('trackCustom', 'CTA_Click');
+      }
+      
+      // 2. 發送給 Google GA4 自訂事件
+      if(typeof gtag === 'function') {
+          gtag('event', 'whatsapp_click', {
+              'event_category': 'Engagement',
+              'event_label': 'Instagram DM Button'
+          });
+      }
+  }
   </script>
 </head>
 
@@ -215,11 +242,12 @@
     </div>
 
     <div class="bottom-anchor">
+      <!-- 🎯 按鈕已無損嵌入雙向事件監聽，跳轉與數據抓取兩不誤 -->
       <a class="cta-hotspot"
          href="https://ig.me/m/mate369_au"
          target="_blank"
          rel="noopener"
-         onclick="setTimeout(function(){ if(window.fbq){ fbq('trackCustom','CTA_Click'); } },50);">
+         onclick="trackAllianceClick();">
          DM Us on Instagram to Start
       </a>
 
