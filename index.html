@@ -25,7 +25,7 @@
       margin: 0 auto;
       top: 50%;
       transform: translateY(-50%);
-      background: #0d1527; /* 質感深海藍底色 */
+      background: #0d1527; 
       overflow: hidden;
       
      
@@ -45,7 +45,7 @@
       z-index: 1;
     }
 
-    /* 🎯 資訊文案區 */
+    
     .info-content {
       position: absolute;
       top: 56.5%; 
@@ -62,9 +62,9 @@
     }
     .info-content::-webkit-scrollbar { display: none; } 
 
-    /* 💡 主標題：改用 cqw (大盒子寬度單位) 取代 vw，並提高 iPad 上的字體上限 */
+    
     .text-box h1 {
-      /* 💡 最小 18px，隨大盒子寬度縮放，最大在平板上可達 26px，確保夠霸氣 */
+     
       font-size: clamp(18px, 5.5cqw, 26px);
       font-weight: 900; 
       color: #00f2fe;  
@@ -73,9 +73,9 @@
       letter-spacing: 0.8px;
     }
     
-    /* 💡 副標題描述 */
+   
     .text-box p {
-      /* 💡 平板上上限提升到 16px，更好閱讀 */
+     
       font-size: clamp(12px, 3.5cqw, 16px);
       color: #f3f4f6; 
       line-height: 1.5; 
@@ -88,14 +88,14 @@
     .bullet-item {
       display: flex;
       align-items: center;
-      margin-bottom: 8px; /* 稍微拉開一點行距 */
-      font-size: clamp(12px, 3.5cqw, 15.5px); /* 💡 平板上限提升 */
+      margin-bottom: 8px; 
+      font-size: clamp(12px, 3.5cqw, 15.5px); 
       color: #e5e7eb;
       font-weight: 500;
       line-height: 1.4;
     }
     
-    /* 賣點前面的螢光綠打勾 */
+    
     .bullet-item::before {
       content: "✓";
       color: #10b981;
@@ -103,7 +103,7 @@
       margin-right: 8px;
     }
 
-    /* 🎯 按鈕容器 */
+    
     .bottom-anchor {
       position: absolute;
       bottom: 3%;
@@ -112,11 +112,11 @@
       z-index: 10;
     }
 
-    /* 轉換按鈕（CTA） */
+    
     .cta-hotspot{
       position: relative;
       width: 100%;
-      height: 48px; /* 稍微加厚 2px，在 iPad 上更好點擊 */
+      height: 48px; 
       border-radius: 999px;
       display: flex;
       align-items: center;
@@ -124,7 +124,7 @@
       text-decoration: none;
       cursor: pointer;
       box-sizing: border-box;
-      font-size: clamp(14px, 4.2cqw, 18px); /* 💡 按鈕字體也同步依大盒子縮放 */
+      font-size: clamp(14px, 4.2cqw, 18px); 
       font-weight: 950;
       letter-spacing: 1px;
       color: #fff;
